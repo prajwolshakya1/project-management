@@ -20,6 +20,13 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from project.views import project_index
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +35,9 @@ urlpatterns = [
     path('api/project/',include('project.api.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
+    path('sentry-debug/', trigger_error),
+    path('project',project_index,name="project-index"),
 ]
+
+urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+print(urlpatterns)

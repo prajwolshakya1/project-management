@@ -12,10 +12,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import sentry_sdk
+from dotenv import load_dotenv
+import os
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv() 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -28,7 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+print(os.getenv("DSN"))
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +59,7 @@ PROJECT_APPS=[
     'employee',
     'project',
     'task',
+    'home',
 ]
 
 REST_FRAMEWORK = {
@@ -148,8 +155,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATIC_ROOT= BASE_DIR/'public/static'
 
+STATICFILES_DIRS=[
+    BASE_DIR / "public/static",
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+sentry_sdk.init(
+    dsn="https://839d6d2a0a813c01d6187649ddf61a58@o4508605377019904.ingest.us.sentry.io/4508605407756288",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    _experiments={
+        # Set continuous_profiling_auto_start to True
+        # to automatically start the profiler on when
+        # possible.
+        "continuous_profiling_auto_start": True,
+    },
+)
