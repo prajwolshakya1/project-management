@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from project.models import Project
+from project.models import Project,ProjectRole
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -14,6 +14,11 @@ class ProjectSerializer(serializers.ModelSerializer):
         data['end_date']=instance.end_date if instance.end_date else ""
         data['deadline']=instance.deadline if instance.deadline else ""
         return data
+    
+class ProjectRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectRole
+        fields = '__all__'
 
 
 
