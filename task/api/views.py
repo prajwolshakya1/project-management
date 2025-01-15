@@ -4,7 +4,7 @@ from .serializers import TaskSerializer
 from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 class TaskView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     def get(self, request):
         data = Task.objects.all()
         serializer = TaskSerializer(data, many=True)
@@ -16,7 +16,7 @@ class TaskView(GenericAPIView):
         if serialzier.is_valid():
             serialzier.save()
             return Response({
-                "message":"Project Added Successfully"
+                "message":"Task Added Successfully"
             })
         return Response(serialzier.errors)
     

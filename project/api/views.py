@@ -7,6 +7,7 @@ from .serializers import ProjectSerializer,ProjectRoleSerializer
 from rest_framework.views import APIView,View
 from rest_framework.generics import GenericAPIView,RetrieveDestroyAPIView,RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle,AnonRateThrottle
 
 @api_view(['GET'])
 def project_list(request):
@@ -17,6 +18,7 @@ def project_list(request):
 
 class ProjectView(APIView):
     permission_classes=[IsAuthenticated]
+    throttle_classes=[UserRateThrottle,AnonRateThrottle]
     def get(self,request):
         data=Project.objects.all()
         serializer=ProjectSerializer(data,many=True)

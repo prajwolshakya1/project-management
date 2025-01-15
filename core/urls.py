@@ -23,6 +23,22 @@ from rest_framework_simplejwt.views import (
 from project.views import project_index
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Project Management API",
+      default_version='v1',
+      description="This project is used for project management.",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="trainer@broadway.com"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 
 def trigger_error(request):
@@ -39,6 +55,10 @@ urlpatterns = [
     path('sentry-debug/', trigger_error),
     path('project',project_index,name="project-index"),
     path('api/task/',include('task.api.urls')),
+
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

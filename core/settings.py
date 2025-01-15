@@ -52,6 +52,7 @@ THIRD_PARTY_APPS=[
     'rest_framework',
     'djangoql',
     'rest_framework_simplejwt',
+    'drf_yasg',
 ]
 
 PROJECT_APPS=[
@@ -67,7 +68,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '1/day',
+        'user': '5/day'
+    }
     
 }
 
